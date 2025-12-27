@@ -1,10 +1,19 @@
 <!DOCTYPE html>
 <html>
+<head>
+  <meta charset="UTF-8">
+  <title>Loading…</title>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const role = params.get("role");
+
+    if (role === "performer") {
+      window.location.href = "performer.html";
+    } else {
+      window.location.href = "spectator.html";
+    }
+  </script>
+</head>
 <body>
-  <h2>Screen Share MVP</h2>
-  <ul>
-    <li><a href="share.html">Share Screen</a></li>
-    <li><a href="view.html">View Screen</a></li>
-  </ul>
 </body>
 </html>
