@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Screen Share</title>
+  <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+</head>
+<body>
+  <h2>Share Your Screen</h2>
+  <p>Your access code:</p>
+  <h1 id="code">...</h1>
+  <button id="share">Share Screen</button>
+
+  <script>
+    const peer = new Peer();
+    const codeEl = document.getElementById("code");
+
+    peer.on("open", id => {
+      codeEl.textContent = id;
+    });
+
+    document.getElementById("share").onclick = async () => {
+      const stream = await navigator.mediaDevices.getDisplayMedia({
+        video: true,
+        audio: false
+      });
+
+      peer.on("call", call => {
+        call.answer(stream);
+      });
+    };
+  </script>
+</body>
+</html>
