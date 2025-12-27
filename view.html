@@ -1,21 +1,76 @@
-<script>
-  const peer = new Peer();
-  const video = document.getElementById("screen");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>View Screen</title>
+  <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
 
-  document.getElementById("connect").onclick = () => {
-    const id = document.getElementById("code").value.trim();
-    if (!id) return alert("Enter a code");
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      text-align: center;
+      margin: 40px;
+    }
 
-    const call = peer.call(id, new MediaStream());
+    input {
+      font-size: 20px;
+      padding: 10px;
+      width: 220px;
+      text-align: center;
+    }
 
-    call.on("stream", stream => {
-      video.srcObject = stream;
-      video.play();
-    });
+    button {
+      font-size: 18px;
+      padding: 10px 20px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
 
-    call.on("error", err => {
-      console.error(err);
-      alert("Connection failed");
-    });
-  };
-</script>
+    video {
+      margin-top: 30px;
+      width: 90%;
+      max-width: 1200px;
+      border: 1px solid #ccc;
+      background: black;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>View Shared Screen</h2>
+
+  <div>
+    <input id="code" placeholder="Enter access code" />
+    <button id="connectBtn">Connect</button>
+  </div>
+
+  <video id="screen" autoplay playsinline></video>
+
+  <script>
+    const peer = new Peer();
+    const video = document.getElementById("screen");
+
+    document.getElementById("connectBtn").onclick = () => {
+      const id = document.getElementById("code").value.trim();
+
+      if (!id) {
+        alert("Please enter the access code.");
+        return;
+      }
+
+      const call = peer.call(id, new MediaStream());
+
+      call.on("stream", stream => {
+        video.srcObject = stream;
+        video.play();
+      });
+
+      call.on("error", err => {
+        console.error(err);
+        alert("Failed to connect.");
+      });
+    };
+  </script>
+
+</body>
+</html>
