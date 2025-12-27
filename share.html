@@ -34,26 +34,30 @@
 
   <script>
     function generateAccessCode() {
-      return Math.floor(Math.random() * 1_000_0000)
+      return "screen-" + Math.floor(Math.random() * 1_000_0000)
         .toString()
         .padStart(7, "0");
     }
 
     const accessCode = generateAccessCode();
-    document.getElementById("code").textContent = accessCode;
+    document.getElementById("code").textContent = accessCode.replace("screen-", "");
 
     const peer = new Peer(accessCode);
+
     let sharedStream = null;
 
-    // IMPORTANT: register call handler immediately
+    peer.on("open", id => {
+      console.log("Sharer peer open:", id);
+    });
+
     peer.on("call", call => {
+      console.log("Incoming call");
       if (sharedStream) {
         call.answer(sharedStream);
       } else {
-        // wait until sharing starts
-        const waitForStream = setInterval(() => {
+        const wait = setInterval(() => {
           if (sharedStream) {
-            clearInterval(waitForStream);
+            clearInterval(wait);
             call.answer(sharedStream);
           }
         }, 200);

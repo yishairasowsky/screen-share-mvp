@@ -43,13 +43,21 @@
     const peer = new Peer();
     const video = document.getElementById("screen");
 
-    document.getElementById("connectBtn").onclick = () => {
-      const id = document.getElementById("code").value.trim();
-      if (!id) return alert("Enter access code");
+    peer.on("open", id => {
+      console.log("Viewer peer open:", id);
+    });
 
-      const call = peer.call(id);
+    document.getElementById("connectBtn").onclick = () => {
+      const raw = document.getElementById("code").value.trim();
+      if (!raw) return alert("Enter access code");
+
+      const targetId = "screen-" + raw;
+      console.log("Calling:", targetId);
+
+      const call = peer.call(targetId);
 
       call.on("stream", stream => {
+        console.log("Received stream");
         video.srcObject = stream;
         video.play();
       });
