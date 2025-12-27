@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Loading…</title>
+  <title>Loading...</title>
   <script>
     const params = new URLSearchParams(window.location.search);
     const role = params.get("role");
@@ -10,6 +10,7 @@
     if (role === "performer") {
       window.location.href = "performer.html";
     } else {
+      // 👇 THIS is the important change
       window.location.href = "words.html";
     }
   </script>
