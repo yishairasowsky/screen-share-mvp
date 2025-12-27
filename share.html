@@ -1,30 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Share Screen</title>
   <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+
   <style>
     body {
-      font-family: system-ui, sans-serif;
+      font-family: system-ui, -apple-system, sans-serif;
       text-align: center;
       margin-top: 60px;
     }
+
     #code {
       font-size: 44px;
       letter-spacing: 4px;
       margin: 20px 0;
     }
+
     button {
       font-size: 18px;
       padding: 14px 26px;
-      margin: 10px;
+      margin: 8px;
       cursor: pointer;
     }
+
     .hint {
-      color: #666;
-      font-size: 14px;
       margin-top: 20px;
+      font-size: 14px;
+      color: #666;
     }
   </style>
 </head>
@@ -36,21 +40,28 @@
   <div id="code">—</div>
 
   <div>
-    <button onclick="startShare('screen')">Share Entire Screen</button>
+    <button onclick="startShare('monitor')">Share Entire Screen</button>
     <button onclick="startShare('window')">Share App Window</button>
-    <button onclick="startShare('tab')">Share Browser Tab</button>
+    <button onclick="startShare('browser')">Share Browser Tab</button>
   </div>
 
   <div class="hint">
-    A browser dialog will appear.  
+    A browser permission dialog will appear.  
     Select the option that matches the button you clicked.
   </div>
 
   <script>
-    // --- ACCESS CODE ---
-    const accessCode = Math.floor(1000000 + Math.random() * 9000000).toString();
+    // ---------- ACCESS CODE ----------
+    function generateAccessCode() {
+      return Math.floor(Math.random() * 1_000_0000)
+        .toString()
+        .padStart(7, "0");
+    }
+
+    const accessCode = generateAccessCode();
     document.getElementById("code").textContent = accessCode;
 
+    // ---------- PEER CONNECTION ----------
     const peer = new Peer(accessCode);
     let sharedStream = null;
 
@@ -60,35 +71,25 @@
       }
     });
 
-    async function startShare(type) {
+    // ---------- SCREEN SHARING ----------
+    async function startShare(surfaceType) {
       try {
         const constraints = {
-          video: true,
+          video: {
+            displaySurface: surfaceType
+          },
           audio: false
         };
 
-        /*
-          NOTE:
-          These hints bias the chooser but do NOT bypass it.
-          Browsers enforce the chooser by design.
-        */
-        if (type === "tab") {
-          constraints.video = { displaySurface: "browser" };
-        } else if (type === "window") {
-          constraints.video = { displaySurface: "window" };
-        } else {
-          constraints.video = { displaySurface: "monitor" };
-        }
-
         sharedStream = await navigator.mediaDevices.getDisplayMedia(constraints);
 
-        // Reset if sharing stops
+        // Reload page if user stops sharing
         sharedStream.getVideoTracks()[0].addEventListener("ended", () => {
           location.reload();
         });
 
       } catch (err) {
-        alert("Screen sharing cancelled.");
+        alert("Screen sharing was cancelled.");
       }
     }
   </script>
