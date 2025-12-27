@@ -1,33 +1,77 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>Screen Share</title>
   <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 60px;
+    }
+    #code {
+      font-size: 48px;
+      letter-spacing: 4px;
+      margin: 20px 0;
+    }
+    button {
+      font-size: 20px;
+      padding: 14px 28px;
+      cursor: pointer;
+    }
+    .hint {
+      color: #666;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+  </style>
 </head>
 <body>
+
   <h2>Share Your Screen</h2>
-  <p>Your access code:</p>
-  <h1 id="code">...</h1>
-  <button id="share">Share Screen</button>
+
+  <div>Your access code:</div>
+  <div id="code">—</div>
+
+  <button id="shareBtn">Share Screen</button>
+
+  <div class="hint">
+    When prompted, select <b>Entire Screen</b> and click Share.
+  </div>
 
   <script>
-    const peer = new Peer();
-    const codeEl = document.getElementById("code");
+    // Generate short numeric code (7 digits)
+    const accessCode = Math.floor(1000000 + Math.random() * 9000000).toString();
+    document.getElementById("code").textContent = accessCode;
 
-    peer.on("open", id => {
-      codeEl.textContent = id;
+    const peer = new Peer(accessCode);
+    let sharedStream = null;
+
+    // Prepare to answer incoming call
+    peer.on("call", call => {
+      if (sharedStream) {
+        call.answer(sharedStream);
+      }
     });
 
-    document.getElementById("share").onclick = async () => {
-      const stream = await navigator.mediaDevices.getDisplayMedia({
-        video: true,
-        audio: false
-      });
+    document.getElementById("shareBtn").onclick = async () => {
+      try {
+        sharedStream = await navigator.mediaDevices.getDisplayMedia({
+          video: true,
+          audio: false
+        });
 
-      peer.on("call", call => {
-        call.answer(stream);
-      });
+        // Optional: auto-stop if user ends sharing
+        sharedStream.getVideoTracks()[0].addEventListener("ended", () => {
+          location.reload();
+        });
+
+      } catch (err) {
+        alert("Screen sharing was cancelled.");
+      }
     };
   </script>
+
 </body>
 </html>

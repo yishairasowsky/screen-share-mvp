@@ -1,28 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>View Screen</title>
-  <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
-</head>
-<body>
-  <h2>View Screen</h2>
-  <input id="code" placeholder="Enter access code">
-  <button id="connect">Connect</button>
-  <br><br>
-  <video id="screen" autoplay playsinline></video>
+<script>
+  const peer = new Peer();
+  const video = document.getElementById("screen");
 
-  <script>
-    const peer = new Peer();
-    const video = document.getElementById("screen");
+  document.getElementById("connect").onclick = () => {
+    const id = document.getElementById("code").value.trim();
+    if (!id) return alert("Enter a code");
 
-    document.getElementById("connect").onclick = () => {
-      const id = document.getElementById("code").value;
-      const call = peer.call(id, null);
+    const call = peer.call(id, new MediaStream());
 
-      call.on("stream", stream => {
-        video.srcObject = stream;
-      });
-    };
-  </script>
-</body>
-</html>
+    call.on("stream", stream => {
+      video.srcObject = stream;
+      video.play();
+    });
+
+    call.on("error", err => {
+      console.error(err);
+      alert("Connection failed");
+    });
+  };
+</script>
