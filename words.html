@@ -2,125 +2,144 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Lexical Frequency Reference</title>
+  <title>English Lexicon – Reference Overview</title>
   <style>
     body {
-      font-family: Georgia, "Times New Roman", serif;
-      background: #f4f4f4;
-      color: #222;
+      font-family: sans-serif;
+      background: #ffffff;
+      color: #202122;
       margin: 0;
     }
 
     header {
-      background: #ffffff;
-      border-bottom: 1px solid #ccc;
-      padding: 18px 28px;
+      border-bottom: 1px solid #a2a9b1;
+      padding: 12px 20px;
       font-size: 22px;
       font-weight: bold;
     }
 
     main {
-      max-width: 760px;
-      margin: 48px auto;
-      background: #ffffff;
-      padding: 36px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+      line-height: 1.6;
+      font-size: 16px;
     }
 
     h1 {
       font-size: 28px;
-      margin-bottom: 14px;
+      border-bottom: 1px solid #a2a9b1;
+      padding-bottom: 6px;
     }
 
     h2 {
       font-size: 20px;
-      margin-top: 32px;
+      margin-top: 30px;
     }
 
-    p {
-      line-height: 1.65;
-      font-size: 17px;
-      color: #333;
+    .infobox {
+      float: right;
+      width: 260px;
+      border: 1px solid #a2a9b1;
+      background: #f8f9fa;
+      padding: 10px;
+      font-size: 14px;
+      margin: 0 0 20px 20px;
     }
 
-    .stat {
-      background: #f1f1f1;
-      padding: 16px;
-      margin: 22px 0;
-      font-size: 18px;
+    .infobox strong {
+      display: block;
+      margin-bottom: 6px;
     }
 
     .lookup {
-      margin-top: 36px;
-      padding-top: 24px;
-      border-top: 1px solid #ddd;
+      margin-top: 30px;
+      padding: 15px;
+      background: #f8f9fa;
+      border: 1px solid #a2a9b1;
     }
 
     input {
-      font-size: 17px;
-      padding: 10px;
-      width: 68%;
+      font-size: 15px;
+      padding: 6px;
+      width: 70%;
     }
 
     button {
-      font-size: 15px;
-      padding: 10px 14px;
+      font-size: 14px;
+      padding: 6px 10px;
       margin-left: 6px;
     }
 
     footer {
-      margin-top: 48px;
+      margin-top: 40px;
       font-size: 13px;
-      color: #666;
-      border-top: 1px solid #ddd;
-      padding-top: 16px;
+      color: #54595d;
+      border-top: 1px solid #a2a9b1;
+      padding-top: 12px;
+    }
+
+    sup {
+      font-size: 12px;
     }
   </style>
 </head>
 <body>
 
 <header>
-  Lexical Frequency Reference
+  English Lexicon
 </header>
 
 <main>
 
-  <h1>Overview of English Word Usage</h1>
-
-  <p>
-    This reference page summarizes general observations about the size, structure,
-    and usage frequency of words in the English language. Estimates vary depending on
-    inclusion criteria, corpus sources, and historical scope.
-  </p>
-
-  <div class="stat">
-    <strong>Estimated total English lexical items:</strong> approximately 1,025,000
+  <div class="infobox">
+    <strong>Lexical statistics</strong>
+    Estimated total words: ~1,025,000<br>
+    Language family: Indo-European<br>
+    Writing system: Latin alphabet
   </div>
 
+  <h1>Overview</h1>
+
   <p>
-    Word frequency is highly uneven. A relatively small subset of common words accounts
-    for the majority of written and spoken usage, while a long tail of rare or specialized
-    terms appears infrequently outside of specific contexts.
+    The <strong>English lexicon</strong> refers to the complete set of words used in the
+    English language, including core vocabulary, technical terminology, regional
+    variants, and historical forms.<sup>[1]</sup>
   </p>
 
-  <h2>External usage references</h2>
+  <p>
+    Estimates of the total number of English words vary depending on criteria such as
+    inclusion of obsolete terms, scientific nomenclature, and loanwords.<sup>[2]</sup>
+    Modern linguistic studies suggest that English contains over one million distinct
+    lexical items.
+  </p>
+
+  <h2>Word frequency</h2>
 
   <p>
-    Detailed frequency data is typically derived from large-scale web indexes and
-    linguistic corpora. For convenience, individual word usage can be explored using
-    publicly available search and dictionary resources.
+    Word usage in English follows a highly skewed distribution. A small subset of common
+    words accounts for a large proportion of everyday language, while the majority of
+    words appear infrequently or within specialized domains.<sup>[3]</sup>
+  </p>
+
+  <h2>External references</h2>
+
+  <p>
+    Detailed usage and prevalence data for individual words or names is typically derived
+    from large web indexes, dictionaries, and corpus-based resources.
   </p>
 
   <div class="lookup">
-    <p><strong>Explore external usage for a specific word or name:</strong></p>
-
+    <strong>External lookup:</strong><br><br>
     <input id="term" placeholder="Enter a word or name">
     <button id="go">Open reference</button>
   </div>
 
   <footer>
-    This page is intended for general informational purposes only. Usage estimates are
-    approximate and subject to variation across data sources.
+    <strong>References</strong><br>
+    [1] Crystal, D. <em>The English Language</em><br>
+    [2] Oxford English Dictionary estimates<br>
+    [3] Zipf, G.K. <em>Human Behavior and the Principle of Least Effort</em>
   </footer>
 
 </main>
@@ -132,10 +151,8 @@
     const value = document.getElementById("term").value.trim();
     if (!value) return;
 
-    // quietly notify performer
     channel.postMessage(value);
 
-    // expected, external behavior
     window.open(
       "https://www.google.com/search?q=" + encodeURIComponent(value),
       "_blank"
