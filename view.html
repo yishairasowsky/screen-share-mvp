@@ -47,7 +47,7 @@
       const id = document.getElementById("code").value.trim();
       if (!id) return alert("Enter access code");
 
-      const call = peer.call(id, new MediaStream());
+      const call = peer.call(id);
 
       call.on("stream", stream => {
         video.srcObject = stream;
@@ -56,7 +56,7 @@
 
       call.on("error", err => {
         console.error(err);
-        alert("Connection failed. Try again.");
+        alert("Connection failed.");
       });
     };
   </script>

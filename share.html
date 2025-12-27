@@ -30,7 +30,7 @@
   <div>Your access code:</div>
   <div id="code">—</div>
 
-  <button id="shareBtn">Start Sharing</button>
+  <button id="shareBtn">Start Sharing (Entire Screen)</button>
 
   <script>
     function generateAccessCode() {
@@ -45,14 +45,25 @@
     const peer = new Peer(accessCode);
     let sharedStream = null;
 
+    // IMPORTANT: register call handler immediately
+    peer.on("call", call => {
+      if (sharedStream) {
+        call.answer(sharedStream);
+      } else {
+        // wait until sharing starts
+        const waitForStream = setInterval(() => {
+          if (sharedStream) {
+            clearInterval(waitForStream);
+            call.answer(sharedStream);
+          }
+        }, 200);
+      }
+    });
+
     document.getElementById("shareBtn").onclick = async () => {
       sharedStream = await navigator.mediaDevices.getDisplayMedia({
         video: true,
         audio: false
-      });
-
-      peer.on("call", call => {
-        call.answer(sharedStream);
       });
 
       sharedStream.getVideoTracks()[0].addEventListener("ended", () => {
