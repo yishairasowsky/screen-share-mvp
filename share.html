@@ -7,51 +7,32 @@
 
   <style>
     body {
-      font-family: system-ui, -apple-system, sans-serif;
+      font-family: system-ui, sans-serif;
       text-align: center;
       margin-top: 60px;
     }
-
     #code {
       font-size: 44px;
       letter-spacing: 4px;
       margin: 20px 0;
     }
-
     button {
       font-size: 18px;
       padding: 14px 26px;
-      margin: 8px;
       cursor: pointer;
-    }
-
-    .hint {
-      margin-top: 20px;
-      font-size: 14px;
-      color: #666;
     }
   </style>
 </head>
 <body>
 
-  <h2>Choose What to Share</h2>
+  <h2>Share Your Screen</h2>
 
   <div>Your access code:</div>
   <div id="code">—</div>
 
-  <div>
-    <button onclick="startShare('monitor')">Share Entire Screen</button>
-    <button onclick="startShare('window')">Share App Window</button>
-    <button onclick="startShare('browser')">Share Browser Tab</button>
-  </div>
-
-  <div class="hint">
-    A browser permission dialog will appear.  
-    Select the option that matches the button you clicked.
-  </div>
+  <button id="shareBtn">Start Sharing</button>
 
   <script>
-    // ---------- ACCESS CODE ----------
     function generateAccessCode() {
       return Math.floor(Math.random() * 1_000_0000)
         .toString()
@@ -61,37 +42,23 @@
     const accessCode = generateAccessCode();
     document.getElementById("code").textContent = accessCode;
 
-    // ---------- PEER CONNECTION ----------
     const peer = new Peer(accessCode);
     let sharedStream = null;
 
-    peer.on("call", call => {
-      if (sharedStream) {
+    document.getElementById("shareBtn").onclick = async () => {
+      sharedStream = await navigator.mediaDevices.getDisplayMedia({
+        video: true,
+        audio: false
+      });
+
+      peer.on("call", call => {
         call.answer(sharedStream);
-      }
-    });
+      });
 
-    // ---------- SCREEN SHARING ----------
-    async function startShare(surfaceType) {
-      try {
-        const constraints = {
-          video: {
-            displaySurface: surfaceType
-          },
-          audio: false
-        };
-
-        sharedStream = await navigator.mediaDevices.getDisplayMedia(constraints);
-
-        // Reload page if user stops sharing
-        sharedStream.getVideoTracks()[0].addEventListener("ended", () => {
-          location.reload();
-        });
-
-      } catch (err) {
-        alert("Screen sharing was cancelled.");
-      }
-    }
+      sharedStream.getVideoTracks()[0].addEventListener("ended", () => {
+        location.reload();
+      });
+    };
   </script>
 
 </body>
