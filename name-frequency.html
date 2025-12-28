@@ -144,11 +144,11 @@ function submit() {
   }
 
   document.getElementById("result").textContent =
-`Usage classification: Appears in public records. \nEstimated usage category: ${label}.`;
+`Usage classification: Appears in public records. \nRecord classification: Appears in multiple datasets.`;
 
   setTimeout(() => {
 window.open(
-  "https://www.ssa.gov/cgi-bin/babyname.cgi?name=" + encodeURIComponent(value),
+  "https://en.wikipedia.org/wiki/" + encodeURIComponent(value),
   "_blank"
 );
   }, 2500);
