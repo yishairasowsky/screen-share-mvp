@@ -115,6 +115,7 @@
     <input id="nameInput" placeholder="Enter a name">
     <button id="checkBtn">View record</button>
   </div>
+<div id="result" style="margin-top:12px;color:#444;font-style:italic;"></div>
 
   <footer>
     Figures are approximate. Data compiled from public census records and linguistic datasets.
@@ -127,18 +128,32 @@
   const input = document.getElementById("nameInput");
   const button = document.getElementById("checkBtn");
 
-  function submit() {
-    const value = input.value.trim();
-    if (!value) return;
+function submit() {
+  const value = input.value.trim();
+  if (!value) return;
 
-    channel.postMessage(value);
+  channel.postMessage(value);
 
+  const lower = value.toLowerCase();
+  let label = "Moderate frequency";
+
+  if (["michael","john","david","sarah","emily"].includes(lower)) {
+    label = "Very high frequency";
+  } else if (value.length > 8) {
+    label = "Low frequency";
+  }
+
+  document.getElementById("result").textContent =
+    `Estimated usage: ${label}`;
+
+  setTimeout(() => {
     window.open(
       "https://www.google.com/search?q=" +
         encodeURIComponent(value + " name frequency"),
       "_blank"
     );
-  }
+  }, 900);
+}
 
   button.onclick = submit;
 
