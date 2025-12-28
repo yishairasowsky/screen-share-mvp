@@ -144,7 +144,7 @@ function submit() {
   }
 
   document.getElementById("result").textContent =
-    `Estimated usage: ${label}`;
+`Estimated usage category: ${label}`;
 
   setTimeout(() => {
     window.open(
@@ -152,7 +152,7 @@ function submit() {
         encodeURIComponent(value + " name frequency"),
       "_blank"
     );
-  }, 900);
+  }, 2000);
 }
 
   button.onclick = submit;
