@@ -18,6 +18,13 @@
   border: 1px solid #ccc;
   font-size: 14px;
 }
+#result {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+#result.show {
+  opacity: 1;
+}
 
     header {
       padding: 14px 20px;
@@ -150,8 +157,14 @@ function submit() {
     label = "Low frequency";
   }
 
-document.getElementById("result").textContent =
-"Record status: Name appears across multiple public datasets.";
+const result = document.getElementById("result");
+result.textContent = "Analyzing public records and linguistic datasets…";
+result.classList.add("show");
+
+setTimeout(() => {
+  result.textContent =
+    "Record status: Name appears across multiple public datasets.";
+}, 1200);
 
   setTimeout(() => {
 window.open(
