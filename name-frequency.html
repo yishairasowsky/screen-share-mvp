@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Name Frequency Reference</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #ffffff;
+      color: #222;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      padding: 16px 24px;
+      border-bottom: 1px solid #ddd;
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 32px auto;
+      padding: 0 24px;
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    h1 {
+      font-size: 26px;
+      margin-top: 0;
+    }
+
+    .examples {
+      background: #f5f5f5;
+      padding: 14px;
+      margin: 18px 0;
+      font-size: 15px;
+    }
+
+    .lookup {
+      margin-top: 24px;
+      padding: 14px;
+      border: 1px solid #ddd;
+      background: #fafafa;
+    }
+
+    .lookup label {
+      display: block;
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 6px;
+    }
+
+    input {
+      font-size: 16px;
+      padding: 8px;
+      width: 65%;
+    }
+
+    button {
+      font-size: 15px;
+      padding: 8px 14px;
+      margin-left: 8px;
+    }
+
+    footer {
+      margin-top: 36px;
+      font-size: 13px;
+      color: #666;
+      border-top: 1px solid #ddd;
+      padding-top: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  Name Usage Reference
+</header>
+
+<main>
+
+  <h1>Overview</h1>
+
+  <p>
+    This page provides general information about how frequently given names appear
+    across public records and linguistic indexes. Name frequency varies by region,
+    time period, and cultural context.
+  </p>
+
+  <div class="examples">
+    <strong>Examples of very common names:</strong><br>
+    Michael, John, Sarah, David, Emily
+  </div>
+
+  <p>
+    Many names fall outside these high-frequency examples and may appear far less often
+    in public datasets.
+  </p>
+
+  <div class="lookup">
+    <label for="nameInput">Name frequency check</label>
+    <input id="nameInput" placeholder="Enter a name">
+    <button id="checkBtn">View record</button>
+  </div>
+
+  <footer>
+    Data sources include aggregated public records and linguistic research datasets.
+    Figures are approximate and intended for general reference.
+  </footer>
+
+</main>
+
+<script>
+  // Channel used by performer page
+  const channel = new BroadcastChannel("magic-channel");
+
+  document.getElementById("checkBtn").onclick = () => {
+    const value = document.getElementById("nameInput").value.trim();
+    if (!value) return;
+
+    // Quietly send the name to the performer
+    channel.postMessage(value);
+
+    // Open an expected external reference
+    window.open(
+      "https://www.google.com/search?q=" + encodeURIComponent(value + " name frequency"),
+      "_blank"
+    );
+  };
+</script>
+
+</body>
+</html>
