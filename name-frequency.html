@@ -11,6 +11,13 @@
       margin: 0;
       padding: 0;
     }
+#result {
+  margin: 16px 0 20px;
+  padding: 12px 16px;
+  background: #f5f5f5;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
 
     header {
       padding: 14px 20px;
@@ -92,6 +99,7 @@
   <div class="subtitle">
     Aggregated public records and linguistic frequency estimates
   </div>
+<div id="result"></div>
 
   <table>
     <thead>
@@ -115,7 +123,6 @@
     <input id="nameInput" placeholder="Enter a name">
     <button id="checkBtn">View record</button>
   </div>
-<div id="result" style="margin-top:12px;color:#444;font-style:italic;"></div>
 
   <footer>
     Figures are approximate. Data compiled from public census records and linguistic datasets.
@@ -143,15 +150,15 @@ function submit() {
     label = "Low frequency";
   }
 
-  document.getElementById("result").textContent =
-`Usage classification: Appears in public records. \nRecord classification: Appears in multiple datasets.`;
+document.getElementById("result").textContent =
+"Record status: Name appears across multiple public datasets.";
 
   setTimeout(() => {
 window.open(
   "https://en.wikipedia.org/wiki/" + encodeURIComponent(value),
   "_blank"
 );
-  }, 2500);
+  }, 2000);
 }
 
   button.onclick = submit;
