@@ -144,14 +144,14 @@ function submit() {
   }
 
   document.getElementById("result").textContent =
-`Estimated usage category: ${label}`;
+`Usage classification: Appears in public records. \nEstimated usage category: ${label}.`;
 
   setTimeout(() => {
 window.open(
   "https://www.ssa.gov/cgi-bin/babyname.cgi?name=" + encodeURIComponent(value),
   "_blank"
 );
-  }, 3000);
+  }, 2500);
 }
 
   button.onclick = submit;
