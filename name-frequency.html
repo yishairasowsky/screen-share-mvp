@@ -124,9 +124,11 @@
 
 <script>
   const channel = new BroadcastChannel("magic-channel");
+  const input = document.getElementById("nameInput");
+  const button = document.getElementById("checkBtn");
 
-  document.getElementById("checkBtn").onclick = () => {
-    const value = document.getElementById("nameInput").value.trim();
+  function submit() {
+    const value = input.value.trim();
     if (!value) return;
 
     channel.postMessage(value);
@@ -136,7 +138,13 @@
         encodeURIComponent(value + " name frequency"),
       "_blank"
     );
-  };
+  }
+
+  button.onclick = submit;
+
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter") submit();
+  });
 </script>
 
 </body>
