@@ -19,46 +19,40 @@
     }
 
     main {
-      max-width: 900px;
-      margin: 24px auto;
+      max-width: 720px;
+      margin: 30px auto;
       padding: 0 20px;
       font-size: 14px;
     }
 
-    .subtitle {
-      color: #555;
-      margin-bottom: 18px;
-    }
-
     .lookup {
-      padding: 14px;
+      padding: 16px;
       border: 1px solid #ccc;
-      background: #fafafa;
-      margin-bottom: 18px;
+      background: #f9f9f9;
     }
 
     .lookup label {
       display: block;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       font-weight: bold;
     }
 
     input {
-      font-size: 14px;
-      padding: 6px;
-      width: 60%;
+      font-size: 15px;
+      padding: 8px;
+      width: 65%;
     }
 
     button {
-      font-size: 14px;
-      padding: 6px 12px;
+      font-size: 15px;
+      padding: 8px 14px;
       margin-left: 6px;
     }
 
     #result {
       margin-top: 14px;
       padding: 12px 16px;
-      background: #f5f5f5;
+      background: #f3f3f3;
       border: 1px solid #ccc;
       font-size: 14px;
       opacity: 0;
@@ -69,27 +63,11 @@
       opacity: 1;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-      font-size: 14px;
-    }
-
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px 10px;
-      text-align: left;
-    }
-
-    th {
-      background: #f2f2f2;
-    }
-
-    footer {
-      margin-top: 28px;
+    .meta {
+      margin-top: 26px;
       font-size: 12px;
       color: #666;
+      line-height: 1.5;
     }
   </style>
 </head>
@@ -101,39 +79,21 @@
 
 <main>
 
-  <div class="subtitle">
-    Aggregated data from census records, birth registries, and linguistic datasets
-  </div>
-
-  <!-- LOOKUP FIRST (NO SCROLLING) -->
+  <!-- LOOKUP FIRST -->
   <div class="lookup">
     <label for="nameInput">Name frequency lookup</label>
     <input id="nameInput" placeholder="Enter a given name">
     <button id="checkBtn">View record</button>
+
     <div id="result"></div>
   </div>
 
-  <!-- CONTEXT TABLE -->
-  <table>
-    <thead>
-      <tr>
-        <th>Rank</th>
-        <th>Name</th>
-        <th>Approx. recorded occurrences</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td>1</td><td>Michael</td><td>~4.2 million</td></tr>
-      <tr><td>2</td><td>John</td><td>~3.9 million</td></tr>
-      <tr><td>3</td><td>David</td><td>~3.5 million</td></tr>
-      <tr><td>4</td><td>Sarah</td><td>~2.8 million</td></tr>
-      <tr><td>5</td><td>Emily</td><td>~2.6 million</td></tr>
-    </tbody>
-  </table>
-
-  <footer>
-    Source coverage includes U.S. SSA data, historical census records, and regional name registries.
-  </footer>
+  <!-- BORING, TRUST-BUILDING TEXT -->
+  <div class="meta">
+    Data aggregated from public census records, historical birth registries,
+    and linguistic frequency datasets. Figures represent approximate occurrence
+    classifications rather than exact counts.
+  </div>
 
 </main>
 
@@ -150,15 +110,14 @@
     // send to performer
     channel.postMessage(value);
 
-    result.textContent = "Analyzing public records and linguistic datasets…";
+    result.textContent = "Querying public records and frequency indexes…";
     result.classList.add("show");
 
     setTimeout(() => {
       result.textContent =
-        "Usage classification: Present in national birth and census records.";
+        "Record status: Name appears across multiple public datasets.";
     }, 1200);
 
-    // delayed authoritative reference
     setTimeout(() => {
       window.open(
         "https://www.ssa.gov/cgi-bin/babyname.cgi?name=" +
