@@ -147,12 +147,11 @@ function submit() {
 `Estimated usage category: ${label}`;
 
   setTimeout(() => {
-    window.open(
-      "https://www.google.com/search?q=" +
-        encodeURIComponent(value + " name frequency"),
-      "_blank"
-    );
-  }, 2000);
+window.open(
+  "https://en.wikipedia.org/wiki/" + encodeURIComponent(value),
+  "_blank"
+);
+  }, 3500);
 }
 
   button.onclick = submit;
