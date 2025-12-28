@@ -9,22 +9,7 @@
       background: #ffffff;
       color: #111;
       margin: 0;
-      padding: 0;
     }
-#result {
-  margin: 16px 0 20px;
-  padding: 12px 16px;
-  background: #f5f5f5;
-  border: 1px solid #ccc;
-  font-size: 14px;
-}
-#result {
-  opacity: 0;
-  transition: opacity 0.6s ease;
-}
-#result.show {
-  opacity: 1;
-}
 
     header {
       padding: 14px 20px;
@@ -35,39 +20,21 @@
 
     main {
       max-width: 900px;
-      margin: 20px auto;
+      margin: 24px auto;
       padding: 0 20px;
       font-size: 14px;
     }
 
     .subtitle {
       color: #555;
-      margin-bottom: 14px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
       margin-bottom: 18px;
-      font-size: 14px;
-    }
-
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px 10px;
-      text-align: left;
-    }
-
-    th {
-      background: #f2f2f2;
-      font-weight: bold;
     }
 
     .lookup {
-      margin-top: 10px;
-      padding: 12px;
+      padding: 14px;
       border: 1px solid #ccc;
       background: #fafafa;
+      margin-bottom: 18px;
     }
 
     .lookup label {
@@ -88,8 +55,39 @@
       margin-left: 6px;
     }
 
+    #result {
+      margin-top: 14px;
+      padding: 12px 16px;
+      background: #f5f5f5;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+
+    #result.show {
+      opacity: 1;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px 10px;
+      text-align: left;
+    }
+
+    th {
+      background: #f2f2f2;
+    }
+
     footer {
-      margin-top: 24px;
+      margin-top: 28px;
       font-size: 12px;
       color: #666;
     }
@@ -104,10 +102,18 @@
 <main>
 
   <div class="subtitle">
-    Aggregated public records and linguistic frequency estimates
+    Aggregated data from census records, birth registries, and linguistic datasets
   </div>
-<div id="result"></div>
 
+  <!-- LOOKUP FIRST (NO SCROLLING) -->
+  <div class="lookup">
+    <label for="nameInput">Name frequency lookup</label>
+    <input id="nameInput" placeholder="Enter a given name">
+    <button id="checkBtn">View record</button>
+    <div id="result"></div>
+  </div>
+
+  <!-- CONTEXT TABLE -->
   <table>
     <thead>
       <tr>
@@ -125,14 +131,8 @@
     </tbody>
   </table>
 
-  <div class="lookup">
-    <label for="nameInput">Check a specific name</label>
-    <input id="nameInput" placeholder="Enter a name">
-    <button id="checkBtn">View record</button>
-  </div>
-
   <footer>
-    Figures are approximate. Data compiled from public census records and linguistic datasets.
+    Source coverage includes U.S. SSA data, historical census records, and regional name registries.
   </footer>
 
 </main>
@@ -141,38 +141,32 @@
   const channel = new BroadcastChannel("magic-channel");
   const input = document.getElementById("nameInput");
   const button = document.getElementById("checkBtn");
+  const result = document.getElementById("result");
 
-function submit() {
-  const value = input.value.trim();
-  if (!value) return;
+  function submit() {
+    const value = input.value.trim();
+    if (!value) return;
 
-  channel.postMessage(value);
+    // send to performer
+    channel.postMessage(value);
 
-  const lower = value.toLowerCase();
-  let label = "Moderate frequency";
+    result.textContent = "Analyzing public records and linguistic datasets…";
+    result.classList.add("show");
 
-  if (["michael","john","david","sarah","emily"].includes(lower)) {
-    label = "Very high frequency";
-  } else if (value.length > 8) {
-    label = "Low frequency";
+    setTimeout(() => {
+      result.textContent =
+        "Usage classification: Present in national birth and census records.";
+    }, 1200);
+
+    // delayed authoritative reference
+    setTimeout(() => {
+      window.open(
+        "https://www.ssa.gov/cgi-bin/babyname.cgi?name=" +
+          encodeURIComponent(value),
+        "_blank"
+      );
+    }, 2200);
   }
-
-const result = document.getElementById("result");
-result.textContent = "Analyzing public records and linguistic datasets…";
-result.classList.add("show");
-
-setTimeout(() => {
-  result.textContent =
-    "Record status: Name appears across multiple public datasets.";
-}, 1200);
-
-  setTimeout(() => {
-window.open(
-  "https://en.wikipedia.org/wiki/" + encodeURIComponent(value),
-  "_blank"
-);
-  }, 1500);
-}
 
   button.onclick = submit;
 
