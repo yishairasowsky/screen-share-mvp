@@ -148,10 +148,10 @@ function submit() {
 
   setTimeout(() => {
 window.open(
-  "https://en.wikipedia.org/wiki/" + encodeURIComponent(value),
+  "https://www.ssa.gov/cgi-bin/babyname.cgi?name=" + encodeURIComponent(value),
   "_blank"
 );
-  }, 3500);
+  }, 3000);
 }
 
   button.onclick = submit;
